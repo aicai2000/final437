@@ -33,31 +33,35 @@ export function create(user: User): Promise<User> {
 
 export function createUser(newUser: User) {
   return new Promise<User>((resolve, reject) => {
-    debugger;
     if (!newUser.username || !newUser.password) {
       reject("must provide username and password");
     }
     UserSchemaModel
       .find({ username: newUser.username })
       .then((found: User[]) => {
-        if (found.length) reject("username exists");
+        if (found && found.length >= 1)
+            reject("username exists");
+          else return true;
       })
-      .then(() =>
-        bcrypt
-          .genSalt(10)
-          .then((salt: string) => bcrypt.hash(newUser.password, salt))
-          .then((hashedPassword: string) => {
-            const user = new UserSchemaModel({
-              username:newUser.username,
-              password: hashedPassword,
-              firstName:newUser.firstName,
-              lastName: newUser.lastName,
-              role: newUser.role
-            });
-            user.save().then((createdNewUser: User) => {
-              if (createdNewUser) resolve(createdNewUser);
-            });
-          })
+      .then((usernameUnique) =>{
+        if (usernameUnique){ 
+          bcrypt
+            .genSalt(10)
+            .then((salt: string) => bcrypt.hash(newUser.password, salt))
+            .then((hashedPassword: string) => {
+              const user = new UserSchemaModel({
+                username:newUser.username,
+                password: hashedPassword,
+                firstName:newUser.firstName,
+                lastName: newUser.lastName,
+                role: newUser.role
+              });
+              user.save().then((createdNewUser: User) => {
+                if (createdNewUser) resolve(createdNewUser);
+              });
+            })
+        }
+        }
       );
   });
 }

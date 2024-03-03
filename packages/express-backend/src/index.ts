@@ -29,7 +29,8 @@ app.post("/api/signup", (req: Request, res: Response) => {
         .then((createdNewUser) => userService.generateAccessToken(createdNewUser.username))
         .then((token) => {
           res.status(201).send({ token: token });
-        });
+        })
+      .catch(err=>res.status(500).send(err));
     }
   });
 
