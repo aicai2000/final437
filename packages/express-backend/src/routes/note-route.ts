@@ -30,8 +30,8 @@ router.delete("/:id", (req: Request, res: Response) =>{
     console.log(req.params.id)
     noteService
     .deleteNoteById(req.params.id)
-    .then(response => {
-        if(response == true){
+    .then((deleteCount: number)=> {
+        if(deleteCount > 0){
             res.status(200).send("note delete successful");
         }
         else

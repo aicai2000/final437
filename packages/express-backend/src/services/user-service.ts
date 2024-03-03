@@ -100,8 +100,8 @@ export function verify(
     UserSchemaModel
       .find({ username })
       .then((found) => {
-        console.log("found")
-        if (found && found.length === 1) return found[0];
+        console.log(found)
+        if (found && found.length >= 1) return found[0];
         else reject("Invalid username or password");
       })
       .then((userOnFile) => {

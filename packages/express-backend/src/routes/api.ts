@@ -9,7 +9,7 @@ import  noteRouter  from "./note-route";
 const router = express.Router();
 
 router.use("/users", authenticateUser, userRouter);
-router.use("/notes", noteRouter);
+router.use("/note", authenticateUser, noteRouter);
 
 // get all notes
 router.get("/notes", (req: Request, res: Response) => {

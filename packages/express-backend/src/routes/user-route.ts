@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 // get all users
-router.get("/getallusers", (req: Request, res: Response) => {
+router.get("/", (req: Request, res: Response) => {
     userService
     .getAllUsers()
     .then((users: User[]) => {

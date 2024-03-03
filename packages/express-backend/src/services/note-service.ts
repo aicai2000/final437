@@ -29,14 +29,14 @@ export function create(note: Note): Promise<Note> {
 
 export function deleteNoteById(id: string) {
     var mongodb = require('mongodb');
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<number>((resolve, reject) => {
         try
         {
             NoteSchemaModel
-            .deleteOne({ "_id": mongodb.ObjectId(id) })
-            .then((result) => {
-                console.log(result);
-                resolve(true);
+            .deleteOne({ "_id": new mongodb.ObjectId(id) })
+            .then((deleteResult) => {
+                console.log(deleteResult);
+                resolve(deleteResult.deletedCount); //{ acknowledged: true, deletedCount: 0 }
             });
         }
         catch (err) {
