@@ -48,7 +48,7 @@ export class UserLogin extends LitElement {
           </label>
           <label>
             <span>Password</span>
-            <input type="password" name="pwd" />
+            <input type="password" name="password" />
           </label>
           <button type="submit">Sign in</button>
           <p
@@ -102,7 +102,7 @@ export class UserLogin extends LitElement {
         const form = event.target as HTMLFormElement;
         const data = new FormData(form);
         const request = new FormDataRequest(data);
-    
+
         request
           .base()
           .post("/login")

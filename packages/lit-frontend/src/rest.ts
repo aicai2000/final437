@@ -90,14 +90,14 @@ export class JSONRequest {
   }
 
   get(endpoint: string): Promise<Response> {
-    return fetch(this._url(endpoint), {
+    return fetch(this._apiurl(endpoint), {
       headers: this._headers(),
       body: this.json && JSON.stringify(this.json)
     });
   }
 
   post(endpoint: string) {
-    return fetch(this._url(endpoint), {
+    return fetch(this._apiurl(endpoint), {
       method: "POST",
       headers: this._headers(),
       body: this.json && JSON.stringify(this.json)
@@ -105,7 +105,7 @@ export class JSONRequest {
   }
 
   put(endpoint: string) {
-    return fetch(this._url(endpoint), {
+    return fetch(this._apiurl(endpoint), {
       method: "PUT",
       headers: this._headers(),
       body: this.json && JSON.stringify(this.json)
@@ -133,6 +133,9 @@ export class JSONRequest {
 
   _url(path: string) {
     return `${SERVER_ROOT}${this._base}${path}`;
+  }
+  _apiurl(path: string) {
+    return `${API_ROOT}${this._base}${path}`;
   }
 }
 

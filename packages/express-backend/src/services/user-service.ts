@@ -140,12 +140,15 @@ export function generateAccessToken(username: String) {
     
     return new Promise((resolve, reject) => {
     jwt.sign({ username: username }, process.env.JWT_SECRET as string, 
-      { expiresIn: '1d'}, 
+      { expiresIn: '1h'}, 
       (err, encodedToken)=>{
           err ? reject(err) : resolve(encodedToken)
       })
     })
   };
 
+//const getUsernameFromToken = (token) => jwt.decode(token)["username"];
+
+//exports.getAudienceFromToken = (token) => jwt.decode(token)["aud"];
   
 export default { index, get, getAllUsers, create, update, generateAccessToken, createUser, loginUser, verify }
