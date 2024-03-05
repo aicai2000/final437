@@ -1,32 +1,29 @@
 import { LitElement, css, html, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import "./user-login-signup";
+import "./notes-list";
 import resetCSS from "/src/styles/reset.css?inline";
 import pageCSS from "/src/styles/page.css?inline";
 
-
-
-@customElement('user-page')
-  export class UserPage extends LitElement { 
+@customElement('notes-page')
+  export class NotesPage extends LitElement { 
   
     static properties = {
-        isSignup: {type: Boolean}
+        hasUsername: {type: Boolean}
     };
-    isSignup = false;    
-  
+    hasUsername = false;
+     
       render() {
         return html`
           <main class="page">
-            <div class="userContent">
-            ${this.isSignup
+            <div class="notesContent">
+                
+            ${this.hasUsername
               ? html`
-                  <user-signup>
-                  </user-signup>
-                  <p><a @click=${() => {this.isSignup = false;}}>Click here</a> to login</p>
+                  <note-list username="emuone">
+                  </note-list>
                 `
               : html`
-                  <user-login></user-login> 
-                  <p>Don't have an account?  <a @click=${() => {this.isSignup = true;}}>Click here</a> to signup</p>
+                  <note-list></note-list> 
                 `}
                 </div>
           </main>
@@ -42,13 +39,13 @@ import pageCSS from "/src/styles/page.css?inline";
           }
         `,
         css`
-         .userContent {
-            width:30em;
+         .notesContent {
+            width:40em;
             font-family: sans-serif;
             justify-content: center;
             margin: auto;
         }
         `
-      ];
+      ];    
 
   }

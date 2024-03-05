@@ -1,5 +1,5 @@
 import { css, html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { createContext, provide } from "@lit/context";
 import {
   APIUser,
@@ -8,23 +8,10 @@ import {
 } from "../rest";
 export let authContext = createContext<APIUser>("auth");
 
-type UserLoginLocation = Location & {
-    params: { signup: string };
-    searchParams: Map<string, string>;
-  };
-
 
 @customElement('user-login')
 export class UserLogin extends LitElement { 
 
-    @property({ attribute: false })
-    location?: UserLoginLocation;
-
-    @property({ reflect: true })
-    get signup() {
-      return this.location?.params.signup;
-    }
-  
     @state()
     loginStatus: number = 0;
   
@@ -92,8 +79,9 @@ export class UserLogin extends LitElement {
         grid-column: 2;
         }
         #content {
-            padding: 48px;
             font-family: sans-serif;
+            justify-content: center;
+            margin: auto;
         }
     `;
 
@@ -122,6 +110,9 @@ export class UserLogin extends LitElement {
               );
               //this._toggleDialog(false);
               this.requestUpdate();
+
+              //TODO, send to notes page
+              window.location.href = "notes.html"
             }
           });
       }
@@ -203,7 +194,6 @@ export class UserSignup extends LitElement {
     grid-column: 2;
     }
     #content {
-        padding: 48px;
         font-family: sans-serif;
     }
 `;
