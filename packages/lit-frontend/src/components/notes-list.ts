@@ -27,15 +27,23 @@ export class NoteList extends LitElement {
 
     render() {
     return html`
-        <div id="content">
             <h2>
                 Notes for ${this.username ? `${this.username}` : "all users"}
             </h2>
-            <ul>
-            ${repeat(this.notes, (note) => note._id, (note, index) => html`
-                <li>${index}: <a @click=${() => this._getNotesByUser(note.username) }>${note.username}</a> - ${note.text}, ${note.createDate.toLocaleString()}</li>
-            `)}
-            </ul>
+            <div class="grid">
+                <span><strong></strong></span>
+                <span><strong>Created By</strong></span>
+                <span><strong>Note</strong></span>
+                <span><strong>Created Datetime</strong></span>
+
+                ${repeat(this.notes, (note) => note._id, (note, index) => html`
+                    <span>${index}</span>
+                    <span><a @click=${() => this._getNotesByUser(note.username) }>${note.username}</a></span>
+                    <span>${note.text}</span>
+                    <span>${note.createDate.toLocaleString()}</span>
+                `)}
+            </div>
+
             <button @click=${this.toggleSort}>Sort Notes</button>
 
             ${this.username
@@ -77,6 +85,19 @@ export class NoteList extends LitElement {
             font-family: sans-serif;
             justify-content: center;
             margin: auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2em 1fr 3fr 1fr;
+            border-top: 1px solid black;
+            border-right: 1px solid black;
+        }
+
+        .grid > span {
+            padding: 8px 4px;
+            border-left: 1px solid black;
+            border-bottom: 1px solid black;
         }
     `;
 
