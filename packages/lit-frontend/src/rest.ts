@@ -5,7 +5,9 @@ const TOKEN_KEY = "JWT_AUTH_TOKEN";
 const API_ROOT = "http://localhost:3000/api";
 
 export function serverPath(path: string) {
-  return `${API_ROOT}${path}`;
+  return SERVER_ROOT.indexOf("localhost") > 0 
+          ? `${API_ROOT}${path}`
+          : `${SERVER_ROOT}${API_PATH}${path}`;
  }
 
  
@@ -90,14 +92,14 @@ export class JSONRequest {
   }
 
   get(endpoint: string): Promise<Response> {
-    return fetch(this._apiurl(endpoint), {
+    return fetch(this._url(endpoint), {
       headers: this._headers(),
       body: this.json && JSON.stringify(this.json)
     });
   }
 
   post(endpoint: string) {
-    return fetch(this._apiurl(endpoint), {
+    return fetch(this._url(endpoint), {
       method: "POST",
       headers: this._headers(),
       body: this.json && JSON.stringify(this.json)
@@ -105,12 +107,21 @@ export class JSONRequest {
   }
 
   put(endpoint: string) {
-    return fetch(this._apiurl(endpoint), {
+    return fetch(this._url(endpoint), {
       method: "PUT",
       headers: this._headers(),
       body: this.json && JSON.stringify(this.json)
     });
   }
+
+  delete(endpoint: string) {
+    return fetch(this._url(endpoint), {
+      method: "DELETE",
+      headers: this._headers(),
+      body: this.json && JSON.stringify(this.json)
+    });
+  }
+
 
   _headers() {
     const hasBody = this.json !== undefined;
@@ -132,10 +143,10 @@ export class JSONRequest {
   }
 
   _url(path: string) {
-    return `${SERVER_ROOT}${this._base}${path}`;
-  }
-  _apiurl(path: string) {
-    return `${API_ROOT}${this._base}${path}`;
+    console.log(SERVER_ROOT)
+    return (SERVER_ROOT.indexOf("localhost") > 0) 
+            ? `${API_ROOT}${this._base}${path}`
+            : `${SERVER_ROOT}${this._base}${path}`;
   }
 }
 
