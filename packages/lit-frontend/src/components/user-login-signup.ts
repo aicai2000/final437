@@ -8,6 +8,10 @@ import {
 } from "../rest";
 export let authContext = createContext<APIUser>("auth");
 
+export interface UserLoggedInEvent {
+  myUsername: string;
+}
+
 
 @customElement('user-login')
 export class UserLogin extends LitElement { 
@@ -53,10 +57,6 @@ export class UserLogin extends LitElement {
         :host {
         display: contents;
         }
-        dialog {
-        display: flex;
-        gap: 4rem;
-        }
         form {
         display: grid;
         grid-template-columns: [start] 1fr 2fr [end];
@@ -90,6 +90,7 @@ export class UserLogin extends LitElement {
         const form = event.target as HTMLFormElement;
         const data = new FormData(form);
         const request = new FormDataRequest(data);
+        console.log(data);
 
         request
           .base()
@@ -108,18 +109,22 @@ export class UserLogin extends LitElement {
                 json.token,
                 () => this._signOut()
               );
-              //this._toggleDialog(false);
+              console.log("this user", this.user);
               this.requestUpdate();
 
-              //TODO, send to notes page
-              window.location.href = "notes.html"
+
+              const event = new CustomEvent<UserLoggedInEvent>("myLoggedIn", {
+                detail: {
+                  myUsername: this.user.username
+                }
+              });
+              this.dispatchEvent(event);
             }
           });
       }
 
       _signOut() {
         this.user = APIUser.deauthenticate(this.user);
-        //this._toggleDialog(!this.isAuthenticated());
         document.location.reload();
       }
 
@@ -129,6 +134,13 @@ export class UserLogin extends LitElement {
 export class UserSignup extends LitElement { 
   @state()
   signupStatus: number = 0;
+
+  @provide({ context: authContext })
+  @state()
+  user: APIUser =
+    AuthenticatedUser.authenticateFromLocalStorage(() =>
+      this._signOut()
+  );
 
   render() {
     return html`
@@ -147,11 +159,11 @@ export class UserSignup extends LitElement {
       </label>
       <label>
         <span>First Name</span>
-        <input name="firstname" />
+        <input name="firstName" />
       </label>
       <label>
         <span>Last Name</span>
-        <input name="lastname" />
+        <input name="lastName" />
       </label>
       <button type="submit">Submit</button>
       <p
@@ -167,10 +179,6 @@ export class UserSignup extends LitElement {
   static styles = css`
     :host {
     display: contents;
-    }
-    dialog {
-    display: flex;
-    gap: 4rem;
     }
     form {
     display: grid;
@@ -198,6 +206,7 @@ export class UserSignup extends LitElement {
     }
 `;
 _handleSignup(event: SubmitEvent) {
+  this.user = APIUser.deauthenticate(this.user);
   event.preventDefault();
   const form = event.target as HTMLFormElement;
   const data = new FormData(form);
@@ -213,9 +222,32 @@ _handleSignup(event: SubmitEvent) {
         this.signupStatus = res.status;
       }
     })
+    // .then((json) => {
+    //   console.log("Signup:", json);
+    // })
     .then((json) => {
-      console.log("Signup:", json);
-    });
-}
+      if (json) {
+        console.log("Authentication:", json.token);
+        this.user = AuthenticatedUser.authenticate(
+          json.token,
+          () => this._signOut()
+        );
+        console.log("this user", this.user);
+        this.requestUpdate();
 
+
+        const event = new CustomEvent<UserLoggedInEvent>("myLoggedIn", {
+          detail: {
+            myUsername: this.user.username
+          }
+        });
+        this.dispatchEvent(event);
+      }
+    });
+  }
+
+  _signOut() {
+    this.user = APIUser.deauthenticate(this.user);
+    document.location.reload();
+  }
 }

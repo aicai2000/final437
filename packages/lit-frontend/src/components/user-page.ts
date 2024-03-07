@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import "./user-login-signup";
 import resetCSS from "/src/styles/reset.css?inline";
 import pageCSS from "/src/styles/page.css?inline";
-
+import {UserLoggedInEvent} from "./user-login-signup";
 
 
 @customElement('user-page')
@@ -25,7 +25,7 @@ import pageCSS from "/src/styles/page.css?inline";
                   <p><a @click=${() => {this.isSignup = false;}}>Click here</a> to login</p>
                 `
               : html`
-                  <user-login></user-login> 
+                  <user-login @myLoggedIn=${this._handleLoggedIn}></user-login> 
                   <p>Don't have an account?  <a @click=${() => {this.isSignup = true;}}>Click here</a> to signup</p>
                 `}
                 </div>
@@ -51,4 +51,17 @@ import pageCSS from "/src/styles/page.css?inline";
         `
       ];
 
+      private _handleLoggedIn(e: CustomEvent<UserLoggedInEvent>) {
+        const detail: UserLoggedInEvent = e.detail;
+        console.log("user-page, myLoggedIn", detail);
+        this.requestUpdate();
+
+        // send an event to user-page container
+        const event = new CustomEvent<UserLoggedInEvent>("myLoggedIn", {
+          detail: {
+            myUsername: detail.myUsername
+          }
+        });
+        this.dispatchEvent(event);
+      }
   }

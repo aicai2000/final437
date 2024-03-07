@@ -54,7 +54,7 @@ export function createUser(newUser: User) {
                 password: hashedPassword,
                 firstName:newUser.firstName,
                 lastName: newUser.lastName,
-                role: newUser.role
+                role: newUser.role ?? "member"
               });
               user.save().then((createdNewUser: User) => {
                 if (createdNewUser) resolve(createdNewUser);

@@ -14,7 +14,7 @@ export function serverPath(path: string) {
 
 export class APIUser {
   authenticated = false;
-  username = "emuone";
+  username = "";
   signOut = () => {};
 
   static _theUser = new APIUser();
@@ -115,6 +115,7 @@ export class JSONRequest {
   }
 
   delete(endpoint: string) {
+    console.log(endpoint)
     return fetch(this._url(endpoint), {
       method: "DELETE",
       headers: this._headers(),
@@ -145,7 +146,7 @@ export class JSONRequest {
   _url(path: string) {
     console.log(SERVER_ROOT)
     return (SERVER_ROOT.indexOf("localhost") > 0) 
-            ? `${API_ROOT}${this._base}${path}`
+            ? `${API_ROOT}${path}`
             : `${SERVER_ROOT}${this._base}${path}`;
   }
 }
