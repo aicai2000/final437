@@ -35,15 +35,15 @@ export class UserLogin extends LitElement {
           <h2>Please Login</h2>
           <label>
             <span>Username</span>
-            <input name="username" />
+            <input name="username" required/>
           </label>
           <label>
             <span>Password</span>
-            <input type="password" name="password" />
+            <input type="password" name="password" required/>
           </label>
           <button type="submit">Sign in</button>
-          <p
-            >${this.loginStatus
+          <span></span>
+          <p class="error">${this.loginStatus
               ? `Login failed: ${this.loginStatus}`
               : ""}</p
           >
@@ -83,6 +83,7 @@ export class UserLogin extends LitElement {
             justify-content: center;
             margin: auto;
         }
+        .error {color: red; padding: 0 10px;}
     `;
 
       _handleLogin(event: SubmitEvent) {
@@ -93,7 +94,6 @@ export class UserLogin extends LitElement {
         console.log(data);
 
         request
-          .base()
           .post("/login")
           .then((res) => {
             if (res.status === 200) {
@@ -151,23 +151,23 @@ export class UserSignup extends LitElement {
       <h2>Fill in the fields to signup</h2>
       <label>
         <span>Username</span>
-        <input name="username" />
+        <input name="username" required />
       </label>
       <label>
         <span>Password</span>
-        <input type="password" name="password" />
+        <input type="password" name="password" required/>
       </label>
       <label>
         <span>First Name</span>
-        <input name="firstName" />
+        <input name="firstName" required />
       </label>
       <label>
         <span>Last Name</span>
-        <input name="lastName" />
+        <input name="lastName" required/>
       </label>
       <button type="submit">Submit</button>
-      <p
-        >${this.signupStatus
+      <span></span>
+      <p class="error">${this.signupStatus
           ? `Signup failed: ${this.signupStatus}`
           : ""}</p
       >
@@ -204,6 +204,7 @@ export class UserSignup extends LitElement {
     #content {
         font-family: sans-serif;
     }
+    .error {color: red; padding: 0 10px;}
 `;
 _handleSignup(event: SubmitEvent) {
   this.user = APIUser.deauthenticate(this.user);
@@ -213,18 +214,14 @@ _handleSignup(event: SubmitEvent) {
   const request = new FormDataRequest(data);
 
   request
-    .base()
     .post("/signup")
     .then((res) => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         return res.json();
       } else {
         this.signupStatus = res.status;
       }
     })
-    // .then((json) => {
-    //   console.log("Signup:", json);
-    // })
     .then((json) => {
       if (json) {
         console.log("Authentication:", json.token);

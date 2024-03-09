@@ -1,9 +1,9 @@
 import { LitElement, css, html, unsafeCSS } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import "./user-login-signup";
+import { customElement } from "lit/decorators.js";
+import "../components/user-login-signup";
 import resetCSS from "/src/styles/reset.css?inline";
 import pageCSS from "/src/styles/page.css?inline";
-import {UserLoggedInEvent} from "./user-login-signup";
+import {UserLoggedInEvent} from "../components/user-login-signup";
 
 
 @customElement('user-page')
@@ -20,7 +20,7 @@ import {UserLoggedInEvent} from "./user-login-signup";
             <div class="userContent">
             ${this.isSignup
               ? html`
-                  <user-signup>
+                  <user-signup @myLoggedIn=${this._handleLoggedIn}>
                   </user-signup>
                   <p><a @click=${() => {this.isSignup = false;}}>Click here</a> to login</p>
                 `
@@ -48,6 +48,7 @@ import {UserLoggedInEvent} from "./user-login-signup";
             justify-content: center;
             margin: auto;
         }
+        a {cursor: pointer;}
         `
       ];
 

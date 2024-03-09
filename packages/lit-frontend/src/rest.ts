@@ -1,13 +1,13 @@
-
-const SERVER_ROOT = window.location.origin;
+const Window_ROOT = window.location.origin;;
+const SERVER_ROOT = "https://express-backend-k4hv.onrender.com/api";
 const API_PATH = "/api";
 const TOKEN_KEY = "JWT_AUTH_TOKEN";
 const API_ROOT = "http://localhost:3000/api";
 
 export function serverPath(path: string) {
-  return SERVER_ROOT.indexOf("localhost") > 0 
+  return Window_ROOT.indexOf("localhost") > 0 
           ? `${API_ROOT}${path}`
-          : `${SERVER_ROOT}${API_PATH}${path}`;
+          : `${SERVER_ROOT}${path}`;
  }
 
  
@@ -80,15 +80,9 @@ export class AuthenticatedUser extends APIUser {
 export class JSONRequest {
   json: Object | undefined;
   user: AuthenticatedUser | undefined;
-  _base = API_PATH;
 
   constructor(body: Object | undefined) {
     this.json = body;
-  }
-
-  base(newBase: string = "") {
-    this._base = newBase;
-    return this;
   }
 
   get(endpoint: string): Promise<Response> {
@@ -144,10 +138,10 @@ export class JSONRequest {
   }
 
   _url(path: string) {
-    console.log(SERVER_ROOT)
-    return (SERVER_ROOT.indexOf("localhost") > 0) 
+    console.log(Window_ROOT)
+    return (Window_ROOT.indexOf("localhost") > 0) 
             ? `${API_ROOT}${path}`
-            : `${SERVER_ROOT}${this._base}${path}`;
+            : `${SERVER_ROOT}${path}`;
   }
 }
 

@@ -2,21 +2,18 @@
 import {LitElement, css, html} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
-import { APIRequest, JSONRequest, serverPath } from "../rest";
+import { APIRequest, serverPath } from "../rest";
 import { Note } from '../models/Note';
 import {
     APIUser,
     AuthenticatedUser,
     FormDataRequest
   } from "../rest";
-import { authContext } from './auth-required';
-import { provide } from '@lit/context';
 
 @customElement('note-list')
 export class NoteList extends LitElement {
     private sort = 1;
     
-    @provide({ context: authContext })
     @state()
     user: APIUser =
       AuthenticatedUser.authenticateFromLocalStorage(() =>
@@ -150,6 +147,7 @@ export class NoteList extends LitElement {
         form > div{
             text-align: center;
         }
+        a {cursor: pointer;}
     `;
 
 
@@ -233,7 +231,6 @@ export class NoteList extends LitElement {
         console.log(data);
 
         request
-          .base()
           .post("/note")
           .then((res) => {
             if (res.status === 201) {
@@ -254,10 +251,8 @@ export class NoteList extends LitElement {
 
         if (dialog) {
         if (open) {
-            console.log("Showing dialog");
             dialog.showModal();
         } else {
-            console.log("Closing dialog");
             dialog.close();
         }
         }
