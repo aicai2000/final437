@@ -1,10 +1,9 @@
-import { LitElement, css, html, unsafeCSS } from "lit";
+import { LitElement, css, html } from "lit";
 import { customElement } from "lit/decorators.js";
 import "../components/user-login-signup";
-import resetCSS from "/src/styles/reset.css?inline";
-import pageCSS from "/src/styles/page.css?inline";
+import  "./../styles/reset.css";
+import "../styles/page.css";
 import {UserLoggedInEvent} from "../components/user-login-signup";
-
 
 @customElement('user-page')
   export class UserPage extends LitElement { 
@@ -22,7 +21,7 @@ import {UserLoggedInEvent} from "../components/user-login-signup";
               ? html`
                   <user-signup @myLoggedIn=${this._handleLoggedIn}>
                   </user-signup>
-                  <p><a @click=${() => {this.isSignup = false;}}>Click here</a> to login</p>
+                  <p>Already have an account? <a @click=${() => {this.isSignup = false;}}>Click here</a> to login</p>
                 `
               : html`
                   <user-login @myLoggedIn=${this._handleLoggedIn}></user-login> 
@@ -34,8 +33,6 @@ import {UserLoggedInEvent} from "../components/user-login-signup";
       }
 
       static styles = [
-        unsafeCSS(resetCSS),
-        unsafeCSS(pageCSS),
         css`
           :host {
             display: contents;
@@ -48,7 +45,10 @@ import {UserLoggedInEvent} from "../components/user-login-signup";
             justify-content: center;
             margin: auto;
         }
-        a {cursor: pointer;}
+        a {
+          cursor: pointer; 
+          color: var(--color-accent);
+        }
         `
       ];
 

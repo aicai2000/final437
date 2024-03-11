@@ -24,18 +24,18 @@
   --color-accent-inverted: rgb(255 208 0);
   --color-background-control: #ccc;
   --color-background-header: var(--color-brand);
-  --color-background-page: rgb(238 237 231);
+  /* --color-background-page: rgb(238 237 231); */
   --color-background-card: white;
   --color-border-control: var(--color-accent);
   --color-foreground-control: #fff;
   --color-link-inverted: var(--color-accent-inverted);
   --color-link: var(--color-accent);
   --color-shadow-dropdown: rgb(51 51 51 / 50%);
-  --color-text: rgb(51 51 51);
+  /* --color-text: rgb(51 51 51);
   --color-text-control: var(--color-text);
   --color-text-heading: var(--color-accent);
   --color-text-inverted: rgb(255 255 255);
-  --color-text-control-inverted: rgb(255 255 255);
+  --color-text-control-inverted: rgb(255 255 255); */
 
   --font-family-body: Merriweather, Baskerville, Cambria,
     "Noto Serif", "Bitstream Charter", serif;
@@ -56,10 +56,19 @@
 
   --shadow-dropdown: 0 2px 2px var(--color-shadow-dropdown);
   --time-transition-control: 300ms;
+
+  --color-background-page: ##EDEEE9;
+  --color-background-form: #D8DBCE;
+  --color-text:#303030;
+  --color-text-control: var(--color-text);
+  --color-text-heading: var(--color-accent);
+  --color-text-inverted: rgb(255 255 255);
+  --color-text-control-inverted: rgb(255 255 255);
 }
 
 body.dark-mode {
   --color-background-page: rgb(3, 69, 2);
+  --color-background-form: #1e1f63;
   --color-text: rgb(240, 240, 223);
   --color-background-card: black;
   --color-accent: var(--color-accent-inverted);

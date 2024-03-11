@@ -20,7 +20,9 @@ export class NoteList extends LitElement {
         this._signOut()
       );
   
-      
+    @property({ reflect: true, type: Boolean })
+    on: boolean = false;
+
     @property()
     username: string = "";
 
@@ -40,8 +42,8 @@ export class NoteList extends LitElement {
                 <input type="hidden" name="username" value="${this.username}">
                 <textarea name="text" rows="10" cols="50"></textarea>
                 <div>
-                    <button type="submit">Add</button>
-                    <button type="button" @click=${this._handleAddNoteClose}>close</button>
+                    <button type="submit" class="add-button">Add</button>
+                    <button type="button" class="add-button" @click=${this._handleAddNoteClose}>close</button>
                 </div>
                 
             </form>
@@ -75,6 +77,7 @@ export class NoteList extends LitElement {
                 <div>
                     <button @click=${this.toggleSort}>Sort Notes By Created Datetime</button>
                 </div>
+                <div><button @click=${this._handleThemeChange}>Toggle theme</button></div>
                 <div><button @click=${this._signOut}>Sign out</button></div>
                 <!-- ${this.username
                     ? html`
@@ -90,11 +93,13 @@ export class NoteList extends LitElement {
         :host {
         display: contents;
         }
+        h2 { color: var(--color-accent)}
         .grid {
             display: grid;
             grid-template-columns: 2em 7em 3fr 1.5fr 5em;
             border-top: 1px solid black;
             border-right: 1px solid black;
+            background-color: var(--color-background-form);
         }
 
         .grid > span {
@@ -105,7 +110,7 @@ export class NoteList extends LitElement {
 
         .grid-buttons-container{
             display: grid;
-            grid-template-columns: auto auto auto;
+            grid-template-columns: auto auto auto auto;
             align-content: space-evenly;
             gap: 20px;
             padding: 10px 0;
@@ -116,10 +121,13 @@ export class NoteList extends LitElement {
             /* text-align: center; */
             padding: 20px 0;
             font-size: 20px;
-            }
+        }
         button{
             padding: 10px 20px;
             font-size: 1em;
+            color: var(--color-background-form);
+            background-color: var(--color-accent);
+            border-color: var(--color-background-form);
         }
 
         dialog {
@@ -128,26 +136,28 @@ export class NoteList extends LitElement {
             border-color: #3333;
         }
         form {
-            display: grid;
-            grid-template-columns: [start]  1fr [end];
-            align-items: baseline;
-        }
-        form > label {
-            display: contents;
-        }
-        form > h2 {
-            grid-column: start / end;
             text-align: center;
+            display: grid;
         }
         form > textarea {
             padding: 10px;
             font-size: 1em;
             margin-bottom: 20px;
         }
+      
         form > div{
             text-align: center;
         }
-        a {cursor: pointer;}
+        .add-button{
+            background-color: var(--color-background-form);
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+        a {
+          cursor: pointer; 
+          color: var(--color-accent);
+          text-decoration: underline;
+        }
     `;
 
 
@@ -257,4 +267,15 @@ export class NoteList extends LitElement {
         }
         }
     }
+
+    _handleThemeChange(ev: InputEvent) {
+        const body = document.body;
+        this.on = !this.on;
+        if (this.on) {
+            body.classList.add("dark-mode");
+        }
+        else {
+            body.classList.remove("dark-mode");
+        }
+      }
 }
