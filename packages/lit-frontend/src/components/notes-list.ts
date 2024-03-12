@@ -268,7 +268,7 @@ export class NoteList extends LitElement {
         }
     }
 
-    _handleThemeChange(ev: InputEvent) {
+    _handleThemeChange() {
         const body = document.body;
         this.on = !this.on;
         if (this.on) {
