@@ -22,7 +22,7 @@ export class APIUser {
     const anon = new APIUser();
 
     console.log("Deauthenticating", user, APIUser._theUser);
-    if (user === APIUser._theUser) {
+    if (user.username === APIUser._theUser.username) {
       localStorage.removeItem(TOKEN_KEY);
       APIUser._theUser = anon;
     }

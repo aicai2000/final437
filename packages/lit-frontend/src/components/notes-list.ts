@@ -36,8 +36,8 @@ export class NoteList extends LitElement {
 
     render() {
         const dialog = html`
-        <dialog>
-            <form @submit=${this._handleAddNote}>
+        <dialog id="add-note-form">
+            <form  @submit=${this._handleAddNote}>
                 <h2>Add Note for ${this.username}</h2>
                 <input type="hidden" name="username" value="${this.username}">
                 <textarea name="text" rows="10" cols="50"></textarea>
@@ -53,14 +53,14 @@ export class NoteList extends LitElement {
 
         return html`
             ${this.isAddNote ? dialog: ""}
-            <h2>Notes for ${this.username ? `${this.username}` : "all users"}</h2>
+            <h2 id="sub-title">Notes for ${this.username ? `${this.username}` : "all users"}</h2>
 
             <div class="grid">
                 <span><strong></strong></span>
-                <span><strong>Created By</strong></span>
+                <span><strong>Author</strong></span>
                 <span><strong>Note</strong></span>
-                <span><strong>Created Datetime</strong></span>
-                <span><strong>Action</strong></span>
+                <span><strong>Created</strong></span>
+                <span><strong></strong></span>
 
                 ${repeat(this.notes, (note) => note._id, (note, index) => html`
                     <span>${index + 1}</span>
@@ -97,15 +97,16 @@ export class NoteList extends LitElement {
         .grid {
             display: grid;
             grid-template-columns: 2em 7em 3fr 1.5fr 5em;
-            border-top: 1px solid black;
-            border-right: 1px solid black;
-            background-color: var(--color-background-form);
+            //border-top: 1px solid black;
+            //border-right: 1px solid black;
+            /* background-color: var(--color-background-form); */
+            background-color: rgba(0, 0, 0, 0);
         }
 
         .grid > span {
             padding: 8px 8px;
-            border-left: 1px solid black;
-            border-bottom: 1px solid black;
+            //border-left: 1px solid black;
+            //border-bottom: 1px solid black;
         }
 
         .grid-buttons-container{
@@ -121,19 +122,25 @@ export class NoteList extends LitElement {
             /* text-align: center; */
             padding: 20px 0;
             font-size: 20px;
+            margin-top: -6px;
         }
         button{
             padding: 10px 20px;
             font-size: 1em;
-            color: var(--color-background-form);
-            background-color: var(--color-accent);
-            border-color: var(--color-background-form);
+            color: var(--main-button-color);
+            /* background-color: var(--color-accent); */
+            /* border-color: var(--color-background-form); */
+            background: none;
+            border: none;
+            cursor: pointer;
         }
 
         dialog {
             display: flex;
             gap: 4rem;
-            border-color: #3333;
+            border-color: rgba(0, 0, 0, 0);
+            background-color: var(--add-note-form-background-color);
+            
         }
         form {
             text-align: center;
@@ -143,6 +150,7 @@ export class NoteList extends LitElement {
             padding: 10px;
             font-size: 1em;
             margin-bottom: 20px;
+            background-color: var(--text-area-background);
         }
       
         form > div{
@@ -158,6 +166,11 @@ export class NoteList extends LitElement {
           color: var(--color-accent);
           text-decoration: underline;
         }
+        #sub-title{
+            margin-top: 44px;
+            margin-bottom: 10px;
+        };
+        
     `;
 
 

@@ -6,6 +6,8 @@ import  "./../styles/reset.css";
 import "../styles/page.css";
 import { createContext, provide } from "@lit/context";
 import { UserLoggedInEvent } from "../components/user-login-signup";
+import { UserSignOutEvent } from "../components/note-header";
+import "../components/note-header";
 
 import {
   APIUser,
@@ -38,6 +40,7 @@ export let authContext = createContext<APIUser>("auth");
 
         const noteList = html`
         <main class="page">
+        <note-header username="${this.user.username}"  @mySignOut=${this._handleSignOut}></note-header>
           <div class="notesContent">
               <note-list username="${this.user.username}">
               </note-list>
@@ -71,5 +74,11 @@ export let authContext = createContext<APIUser>("auth");
         if (detail.myUsername){
           document.location.reload();
         }
+      }
+
+      private _handleSignOut(e: CustomEvent<UserSignOutEvent>) {
+        const detail: UserSignOutEvent = e.detail;
+        console.log("note-page, mySignOut", detail);
+        this._signOut();
       }
   }
